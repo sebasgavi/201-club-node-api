@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <a href="/registro">Agregar nuevo estudiante</a>
+    
+    <ul></ul>
+
+    <script>
+        fetch('/api/1/students')
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(students){
+                console.log(students);
+
+                var ul = document.querySelector('ul');
+
+                students.forEach(function(elem, index){
+                    var li = document.createElement('li');
+                    li.innerText = elem.firstname + ' ' + elem.lastname;
+
+                    var button = document.createElement('button');
+                    button.innerText = 'eliminar';
+                    li.appendChild(button);
+
+                    button.addEventListener('click', function(event){
+                        fetch('/api/1/students/' + elem.id, {
+                            method: 'DELETE'
+                        }).then(function(){
+                            location.href = location.href;
+                        });
+                    });
+
+                    ul.appendChild(li);
+                });
+            });
+    </script>
+
+</body>
+</html>
